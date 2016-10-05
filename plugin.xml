@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    id="pushbots-cordova-plugin"
-    version="1.3.9">
+    id="wetoksoft.com.br.pushbots"
+    version="1.3.9.1">
 
 	<name>Pushbots</name>
 
