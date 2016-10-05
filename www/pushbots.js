@@ -31,7 +31,7 @@ PushbotsPlugin.prototype.initialize = function(app_id, options)
 {
 	
 	alert(this.SERVICE_TITLE);
-	
+
 	var promise = $.Deferred();
 	//var push = this;
 
@@ -93,7 +93,10 @@ PushbotsPlugin.prototype.initialize = function(app_id, options)
 	};
 
 	//Intialize Pushbots
-	this.exec(success, fail, this.SERVICE_TITLE, 'initialize', [this.app_id, this.options]);
+	document.addEventListener("deviceready", function()
+  	{
+	    that.exec(success, fail, that.SERVICE_TITLE, 'initialize', [that.app_id, this.options]);
+	});
 
 	//return
 	return promise;
