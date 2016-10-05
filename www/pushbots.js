@@ -27,12 +27,13 @@ var PushbotsPlugin = function() {};
 * @param {Object} options - platform-specific options
 * @see {@link https://pushbots.com/../../#Options}
 */
-PushbotsPlugin.prototype.initialize = function(app_id, options) {
+PushbotsPlugin.prototype.initialize = function(app_id, options)
+{
 	
 	var promise = $.Deferred();
-	var push = this;
+	//var push = this;
 
-	push._events = {};
+	this._events = {};
 
 	/* VALIDATE APP_ID */
 	// Pushbots Application ID is required
@@ -48,14 +49,14 @@ PushbotsPlugin.prototype.initialize = function(app_id, options) {
 	    console.error('app_id argument is not valid.');
 	    return promise.reject(new Error('app_id argument is not valid.')).promise();
 	}
-	push.app_id = app_id;
+	this.app_id = app_id;
 
 	/* VALIDATE PLATFORM-SPECIFIC OPTIONS*/
 	// iOS:
 	// Android:
-	push.options = options;
+	this.options = options;
 
-	var that = push;
+	var that = this;
 	var success = function (data)
 	{
 	    if (data && typeof data.type !== 'undefined')
@@ -90,10 +91,11 @@ PushbotsPlugin.prototype.initialize = function(app_id, options) {
 	};
 
 	//Intialize Pushbots
-	push.exec(success, fail, push.SERVICE_TITLE, 'initialize', [push.app_id, push.options]);
+	this.exec(success, fail, this.SERVICE_TITLE, 'initialize', [this.app_id, this.options]);
 
 	//return
 	return promise;
+
 };
 
 /**
