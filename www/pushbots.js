@@ -30,6 +30,8 @@ var PushbotsPlugin = function() {};
 PushbotsPlugin.prototype.initialize = function(app_id, options)
 {
 	
+	alert(this.SERVICE_TITLE);
+	
 	var promise = $.Deferred();
 	//var push = this;
 
