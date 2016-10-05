@@ -29,49 +29,71 @@ var PushbotsPlugin = function() {};
 */
 PushbotsPlugin.prototype.initialize = function(app_id, options) {
 	
-	this._events = {};
-	
+	var promise = $.Deferred();
+	var push = this;
+
+	push._events = {};
+
 	/* VALIDATE APP_ID */
 	// Pushbots Application ID is required
-	if (typeof app_id === 'undefined') {
-		console.error('app_id argument is required.');
+	if (typeof app_id === 'undefined')
+	{
+	    console.error('app_id argument is required.');
+	    return promise.reject(new Error('app_id argument is required.')).promise();
 	}
 
 	var checkForAppId = new RegExp("^[0-9a-fA-F]{24}$");
-	if (!checkForAppId.test(app_id)) {
-		console.error('app_id argument is not valid.');
+	if (!checkForAppId.test(app_id))
+	{
+	    console.error('app_id argument is not valid.');
+	    return promise.reject(new Error('app_id argument is not valid.')).promise();
 	}
+	push.app_id = app_id;
 
-	this.app_id = app_id;
-	
 	/* VALIDATE PLATFORM-SPECIFIC OPTIONS*/
 	// iOS:
 	// Android:
-	this.options = options;
-	
-	var that = this;
-	var success = function(data){
-		if (data && typeof data.type !== 'undefined') {
-			//Registration event
-			if(data.type === "registered"){
-				that.fire("registered", data.data.deviceToken);
-			// Received Notification
-			}else if(data.type === "received"){
-				that.fire("notification:received", data.data);
-			// Opened Notification
-			}else if(data.type === "opened"){
-				that.fire("notification:clicked", data.data);
-			}
-		}else{
-			console.log(data);
+	push.options = options;
+
+	var that = push;
+	var success = function (data)
+	{
+	    if (data && typeof data.type !== 'undefined')
+	    {
+		if (data.type === "registered")
+		{
+		    //Registration event
+		    that.fire("registered", data.data.deviceToken);
+		    promise.resolve(data.data);
 		}
+		else if (data.type === "received")
+		{
+		    //Received Notification
+		    that.fire("notification:received", data.data);
+		}
+		else if (data.type === "opened")
+		{
+		    //Opened Notification
+		    that.fire("notification:clicked", data.data);
+		}
+	    }
+	    else
+	    {
+		console.log(data);
+	    }
 	};
-	
-	var fail = function(error){
-		console.error(error);
+
+	var fail = function (error)
+	{
+	    console.error(error);
+	    promise.reject(error);
 	};
-    //Intialize Pushbots
-	exec(success, fail, SERVICE_TITLE, 'initialize', [this.app_id, this.options]);
+
+	//Intialize Pushbots
+	push.exec(success, fail, push.SERVICE_TITLE, 'initialize', [push.app_id, push.options]);
+
+	//return
+	return promise;
 };
 
 /**
