@@ -64,7 +64,7 @@ PushbotsPlugin.prototype.initialize = function(app_id, options) {
 		{
 		    //Registration event
 		    that.fire("registered", data.data.deviceToken);
-		    promise.resolve(data.data);
+		    if (promise) promise.resolve(data.data);
 		}
 		else if (data.type === "received")
 		{
@@ -86,7 +86,7 @@ PushbotsPlugin.prototype.initialize = function(app_id, options) {
 	var fail = function (error)
 	{
 	    console.error(error);
-	    promise.reject(error);
+	    if (promise) promise.reject(error);
 	};
 
 	//Intialize Pushbots
